@@ -1,6 +1,6 @@
 # Creates IAM Policy for EC2
 resource "aws_iam_role" "ec2_roles" {
-  name = "${var.project}_ec2_roles"
+  name = "${var.domain}_ec2_roles"
 
   assume_role_policy = <<EOF
 {
@@ -41,6 +41,6 @@ resource "aws_iam_role_policy_attachment" "CloudWatchLogsFullAccess" {
 }
 
 resource "aws_iam_instance_profile" "ec2_profile" {
-  name = var.project
+  name = var.domain
   role = aws_iam_role.ec2_roles.name
 }
