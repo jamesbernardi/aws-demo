@@ -12,6 +12,4 @@ terraform {
 provider "aws" {
   region              = var.region
   allowed_account_ids = [var.allowed_account_ids]
-  access_key          = var.aws_access_key
-  secret_key          = var.aws_secret_access_key
 }
