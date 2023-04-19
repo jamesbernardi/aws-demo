@@ -74,9 +74,9 @@ locals {
   package_upgrade: true
   package_reboot_if_required: true
   packages:
-    - nginx
+    - httpd
   runcmd:
-    - [ systemctl, enable, --no-block, --now, nginx.service ]
+    - [ systemctl, enable, --no-block, --now, httpd.service ]
   EOF
 }
 
