@@ -98,7 +98,8 @@ locals {
   package_reboot_if_required: true
   runcmd:
     - yum install -y httpd
-    - [ systemctl, enable, --no-block, --now, httpd.service ]
+    - systemctl enable httpd
+    - systemctl start httpd
   EOF
 }
 
