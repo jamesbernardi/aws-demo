@@ -42,8 +42,8 @@ module "http_sg" {
   name                = "http-alb"
   description         = "Http Access from the ALB"
   vpc_id              = module.vpc.vpc_id
-  ingress_cidr_blocks = ["10.0.10.0/24", "10.0.11.0/24", "10.0.20.0/24", "10.0.21.0/24"]
-  egress_cidr_blocks  = ["10.0.10.0/24", "10.0.11.0/24", "10.0.20.0/24", "10.0.21.0/24"]
+  ingress_cidr_blocks = ["10.0.10.0/24", "10.0.11.0/24"]
+  egress_cidr_blocks  = ["10.0.10.0/24", "10.0.11.0/24"]
 }
 
 # Create Security Groups
@@ -98,6 +98,7 @@ locals {
   package_reboot_if_required: true
   runcmd:
     - yum install -y httpd
+    - echo "IT WORKS!!" >> /var/www/html/index.html
     - systemctl enable httpd
     - systemctl start httpd
   EOF
