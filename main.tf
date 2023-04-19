@@ -46,6 +46,29 @@ module "http_sg" {
   egress_cidr_blocks  = ["10.0.10.0/24", "10.0.11.0/24"]
 }
 
+# Create Security Groups
+resource "aws_security_group" "web_egress" {
+  name        = "allow-web-egress"
+  description = "required for SSM Console Connections"
+  vpc_id      = module.vpc.vpc_id
+}
+
+resource "aws_vpc_security_group_egress_rule" "http" {
+  security_group_id = aws_security_group.web_egress.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 80
+  ip_protocol       = "tcp"
+  to_port           = 80
+}
+
+resource "aws_vpc_security_group_egress_rule" "https" {
+  security_group_id = aws_security_group.web_egress.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 443
+  ip_protocol       = "tcp"
+  to_port           = 443
+}
+
 # EC2
 module "ec2" {
   source                 = "terraform-aws-modules/ec2-instance/aws"
@@ -54,7 +77,7 @@ module "ec2" {
   ami                    = data.aws_ami.ec2.id
   instance_type          = "t3a.micro"
   subnet_id              = module.vpc.private_subnets[0]
-  vpc_security_group_ids = [module.http_sg.security_group_id]
+  vpc_security_group_ids = [module.http_sg.security_group_id, aws_security_group.web_egress.id]
   user_data_base64       = base64encode(local.user_data)
   iam_instance_profile   = aws_iam_instance_profile.ec2_profile.name
   root_block_device = [
@@ -73,9 +96,8 @@ locals {
   repo_upgrade: all
   package_upgrade: true
   package_reboot_if_required: true
-  packages:
-    - httpd
   runcmd:
+    - yum install -y httpd
     - [ systemctl, enable, --no-block, --now, httpd.service ]
   EOF
 }
