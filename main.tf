@@ -42,8 +42,8 @@ module "http_sg" {
   name                = "http-alb"
   description         = "Http Access from the ALB"
   vpc_id              = module.vpc.vpc_id
-  ingress_cidr_blocks = ["10.0.10.0/24", "10.0.11.0/24"]
-  egress_cidr_blocks  = ["10.0.10.0/24", "10.0.11.0/24"]
+  ingress_cidr_blocks = ["10.0.10.0/24", "10.0.11.0/24", "10.0.20.0/24", "10.0.21.0/24"]
+  egress_cidr_blocks  = ["10.0.10.0/24", "10.0.11.0/24", "10.0.20.0/24", "10.0.21.0/24"]
 }
 
 # Create Security Groups
