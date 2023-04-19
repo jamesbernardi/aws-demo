@@ -56,7 +56,7 @@ module "ec2" {
   subnet_id              = module.vpc.private_subnets[0]
   vpc_security_group_ids = [module.http_sg.security_group_id]
   user_data_base64       = base64encode(local.user_data)
-
+  iam_instance_profile   = aws_iam_instance_profile.ec2_profile.name
   root_block_device = [
     {
       volume_type = "gp3"
